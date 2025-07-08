@@ -8,8 +8,10 @@ import com.persist.data.repositories.StudentRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootApplication
 public class SoftwareParaPersistenciaDeDadosApplication {
@@ -21,24 +23,43 @@ public class SoftwareParaPersistenciaDeDadosApplication {
 		try {
 			database = new Database("teste.db");
 			StudentRepository studentRepository = new StudentRepository(database);
-
 			NotaRepository notaRepository = new NotaRepository(database);
 
-
-			Student student = new Student("Guilherme Silverio", 12345, new Date());
+			/*Student student = new Student("Guilherme Silverio", 12345, new Date());
 			studentRepository.create(student);
 
-			Nota nota = new Nota(7.5, null);
+			Student student1 = new Student("Marianna Alves", 678910, new Date());
+			studentRepository.create(student1);
+
+			Nota nota = new Nota(new BigDecimal("7.50"), null, new Date());
 			nota.setStudent(student);
 			notaRepository.createNota(nota, student);
 
+			Nota nota1 = new Nota(new BigDecimal("10.00"), "Parabens pela nota!", new Date());
+			nota1.setStudent(student1);
+			notaRepository.createNota(nota1, student1);
 
+			Nota nota = notaRepository.loadFromId(1);
 
-			System.out.println("Estudante criado");
+			Student studentUpdated = studentRepository.loadFromId(1);
+			studentUpdated.setFullName("Jeff Buckley");
+			studentUpdated.setRegistration(101112);
+
+			studentRepository.update(studentUpdated);
+
+			Nota notaUpdated = notaRepository.loadFromId(1);
+			notaUpdated.setNota(new BigDecimal("2.00"));
+			notaUpdated.setObs("Se prepare melhor!");
+
+			notaRepository.update(notaUpdated);*/
+
+			notaRepository.delete(1);
+
+			studentRepository.delete(2);
+
 
 
 		} finally {
-			// 6. Feche a conexão com o banco
 			if (database != null) {
 				database.close();
 				System.out.println("\nConexão com o banco de dados fechada.");

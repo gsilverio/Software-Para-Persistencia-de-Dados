@@ -15,6 +15,7 @@ public class StudentRepository
 {
     private static Database database;
     private static Dao<Student, Integer> dao;
+    private static Dao<Nota, Integer> notaDao;
 
     private List<Student> loadedStudents;
     private Student loadedStudent;
@@ -29,6 +30,7 @@ public class StudentRepository
         StudentRepository.database = database;
         try {
             dao = DaoManager.createDao(database.getConnection(), Student.class);
+            notaDao = DaoManager.createDao(database.getConnection(), Nota.class);
             TableUtils.createTableIfNotExists(database.getConnection(), Student.class);
         }
         catch(SQLException e) {
@@ -47,17 +49,32 @@ public class StudentRepository
         } catch (SQLException e) {
             System.out.println(e);
         }
+        System.out.println("Estudante criado!\n");
         return student;
     }
 
 
 
-    public void update(Student student) {
-
+    public void update(Student student) throws SQLException {
+        int nrows = dao.update(student);
+        if(nrows == 0){
+            throw new SQLException("Falha a atualizar o estudante de id: " + student.getId());
+        }
+        System.out.println("Estudante atualizado!\n");
     }
 
-    public void delete(Student student) {
-        // TODO
+    public void delete(int id) throws SQLException {
+        Student entity = loadFromId(id);
+        deleteOnCascade(entity);
+        dao.delete(entity);
+        System.out.println("Estudante excluido!\n");
+    }
+
+    public void deleteOnCascade(Student student) throws SQLException{
+        if(student.getListNotas() != null && !student.getListNotas().isEmpty()){
+            System.out.println("Deletando todas as notas do estudante: \n" + student.getFullName());
+            notaDao.delete(student.getListNotas());
+        }
     }
 
     public Student loadFromId(int id) {
@@ -68,6 +85,8 @@ public class StudentRepository
         } catch (SQLException e) {
             System.out.println(e);
         }
+        if(loadedStudent!=null)
+            System.out.printf("Buscando estudante de id - %d\n", loadedStudent.getId());
         return this.loadedStudent;
     }
 

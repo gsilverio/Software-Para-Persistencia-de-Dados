@@ -1,36 +1,49 @@
 package com.persist.data.entities;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @DatabaseTable(tableName = "tb_nota")
 public class Nota {
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField
-    private double nota;
+    @DatabaseField(columnDefinition = "DECIMAL(19, 4) NOT NULL")
+    private BigDecimal nota;
     @DatabaseField
     private String obs;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "student_id")
     private Student student;
 
+    @DatabaseField(dataType= DataType.DATE)
+    public Date dataCorrecao;
+
     public Nota(){}
 
-
-    public Nota(double nota, String obs) {
+    public Nota(BigDecimal nota, String obs, Date dataCorrecao) {
         this.nota = nota;
         this.obs = obs;
+        this.dataCorrecao = dataCorrecao;
 
     }
 
-    public double getNota() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public BigDecimal getNota() {
         return nota;
     }
 
-    public void setNota(double nota) {
+    public void setNota(BigDecimal nota) {
         this.nota = nota;
     }
 
@@ -48,5 +61,13 @@ public class Nota {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public Date getDataCorrecao() {
+        return dataCorrecao;
+    }
+
+    public void setDataCorrecao(Date dataCorrecao) {
+        this.dataCorrecao = dataCorrecao;
     }
 }
