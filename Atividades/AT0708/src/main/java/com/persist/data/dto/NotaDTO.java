@@ -34,6 +34,14 @@ public class NotaDTO {
         this.student_id = student_id;
     }
 
+    public NotaDTO(BigDecimal nota, String obs, Date dataCorrecao, int student_id) {
+        this.nota = nota;
+        this.obs = obs;
+        this.dataCorrecao = dataCorrecao;
+        this.student_id = student_id;
+
+    }
+
     public int getId() {
         return id;
     }

@@ -6,13 +6,18 @@ import com.persist.data.dto.NotaDTO;
 import com.persist.data.entities.*;
 import com.persist.data.repositories.NotaRepository;
 import com.persist.data.repositories.StudentRepository;
+import com.persist.data.serializer.NotaSerializer;
 import jakarta.xml.bind.JAXBException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -26,85 +31,39 @@ public class SoftwareParaPersistenciaDeDadosApplication {
 			database = new Database("teste.db");
 			StudentRepository studentRepository = new StudentRepository(database);
 			NotaRepository notaRepository = new NotaRepository(database);
+			NotaSerializer notaSerializer = new NotaSerializer();
 
-			NotaSerializer notaJsonSerializer = new NotaSerializer();
+			List<NotaDTO> list = new ArrayList<>();
+			NotaDTO notaDTO3 = new NotaDTO(new BigDecimal("25.00"), "Notão!!", new Date(), 3);
+			NotaDTO notaDTO4 = new NotaDTO(new BigDecimal("30.00"), "Nuhh!!", new Date(), 4);
+			list.add(notaDTO3);
+			list.add(notaDTO4);
 
-			/*Student student = new Student("Guilherme Silverio", 12345, new Date());
-			studentRepository.create(student);
+			List<NotaDTO> list2 = new ArrayList<>();
+			NotaDTO notaDTO5 = new NotaDTO(new BigDecimal("2.00"), "Estude mais!!", new Date(), 3);
+			list2.add(notaDTO5);
 
-			Student student1 = new Student("Marianna Alves", 678910, new Date());
-			studentRepository.create(student1);
+			String listNotaDto = notaSerializer.createFromJsonList(list2);
+			String listNotaXml =  notaSerializer.createFromXmlList(list);
 
-			Nota nota = new Nota(new BigDecimal("7.50"), null, new Date());
-			nota.setStudent(student);
-			notaRepository.createNota(nota, student);
-
-			Nota nota1 = new Nota(new BigDecimal("10.00"), "Parabens pela nota!", new Date());
-			nota1.setStudent(student1);
-			notaRepository.createNota(nota1, student1);*/
+			System.out.println("json's add: " + notaRepository.importData("json", listNotaDto));
+			System.out.println("xml's add: " + notaRepository.importData("xml", listNotaXml));
 
 			/*
-			Nota nota = notaRepository.loadFromId(1);
+			notaRepository.dumpFile("JSON", new File("notas-json.json"));
+			notaRepository.dumpFile("XML", new File("notas-xml.xml"));
+			notaRepository.dumpData("XML");
 
-			Student studentUpdated = studentRepository.loadFromId(1);
-			studentUpdated.setFullName("Jeff Buckley");
-			studentUpdated.setRegistration(101112);
+			NotaDTO notaDTO = new NotaDTO(new BigDecimal("15.00"), "Muito boa a nota", new Date(), 1);
+			String newNotaJson = notaSerializer.toJson(notaDTO);
+			notaRepository.createFromJson(newNotaJson);
 
-			studentRepository.update(studentUpdated);
-
-			Nota notaUpdated = notaRepository.loadFromId(1);
-			notaUpdated.setNota(new BigDecimal("2.00"));
-			notaUpdated.setObs("Se prepare melhor!");
-
-			notaRepository.update(notaUpdated);*/
-
-			/*Student student4 = studentRepository.loadFromId(1);
-
-			StudentJsonSerializer studentJsonSerializer = new StudentJsonSerializer();
-			String json = studentJsonSerializer.toJson(student4);
-			System.out.println("Estudante: \n" + json);
-
-//			Student loaded = studentJsonSerializer.fromJson(json);
-//			System.out.println("Desserializado: \n" + loaded.getFullName());
-
-			StudentXmlSerializer studentXmlSerializer = new StudentXmlSerializer();
-			String xml = studentXmlSerializer.toXml(student4);
-			System.out.println("XML: \n" + xml);
-
-			Student loaded1 = studentXmlSerializer.fromXml(xml);
-			System.out.println("Desserializado: \n" + loaded1.getFullName());
-
-			List<Student> listStudent = studentRepository.loadAll();
-
-			FileWriter fileWriter = new FileWriter("students.json");
-
-
-			for (Student s : listStudent) {
-				String json1 = studentJsonSerializer.toJson(s);
-				fileWriter.write(json1);
-			}
-
-			fileWriter.close();
+			NotaDTO notaDTO2 = new NotaDTO(new BigDecimal("20.00"), "Parabens!!", new Date(), 3);
+			String newNotaXml = notaSerializer.toXml(notaDTO2);
+			System.out.println("Xml a ser inserido: \n" + newNotaXml);
+			notaRepository.createFromXml(newNotaXml);
 */
 
-			FileReader fileReader = new FileReader("insert-nota.json");
-			NotaDTO notaDTOLoaded = new Gson().fromJson(fileReader, NotaDTO.class);
-
-			Nota nota = new Nota();
-			nota.setNota(notaDTOLoaded.getNota());
-			nota.setObs(notaDTOLoaded.getObs());
-			nota.setDataCorrecao(notaDTOLoaded.getDataCorrecao());
-			nota.setStudent(studentRepository.loadFromId(notaDTOLoaded.getStudent_id()));
-			notaRepository.createNota(nota, studentRepository.loadFromId(notaDTOLoaded.getStudent_id()));
-			fileReader.close();
-
-
-			notaJsonSerializer.dumpFile("JSON", new File("notas-json.json"));
-			notaJsonSerializer.dumpFile("XML", new File("notas-xml.xml"));
-
-
-		}catch (IOException e) {
-			throw new RuntimeException(e);
 		} finally {
 			if (database != null) {
 				database.close();
