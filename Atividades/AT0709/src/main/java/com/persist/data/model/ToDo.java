@@ -1,28 +1,34 @@
-package com.persist.data.entities;
+package com.persist.data.model;
 
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
+
+import jakarta.persistence.*;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@DatabaseTable(tableName = "tb_todo")
+@Entity
+@Table(name = "tb_todo")
 public class ToDo {
-    @DatabaseField(generatedId = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @DatabaseField
     private String descricao;
 
-    @DatabaseField(dataType= DataType.DATE)
     public Date dataCriacao;
 
     public ToDo(){}
 
-    public ToDo(Long id, String descricao, Date dataCriacao) {
+    public ToDo(Long id, String descricao){
         this.id = id;
         this.descricao = descricao;
-        this.dataCriacao = dataCriacao;
+        this.dataCriacao =  new Date();
+
+    }
+    public ToDo(String descricao){
+        this.descricao = descricao;
+        this.dataCriacao = new Date();
     }
 
     public Long getId() {
