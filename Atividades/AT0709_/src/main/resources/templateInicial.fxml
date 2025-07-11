@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="406.0" prefWidth="571.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.persist.data.controller.ToDoController">
+   <children>
+      <TabPane prefHeight="190.0" prefWidth="571.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+         <tabs>
+            <Tab text="TO DO">
+               <content>
+                  <fx:include source="toDoView.fxml"/>
+               </content>
+            </Tab>
+            <Tab text="Categorias">
+               <content>
+                  <fx:include source="categoryView.fxml"/>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</VBox>
