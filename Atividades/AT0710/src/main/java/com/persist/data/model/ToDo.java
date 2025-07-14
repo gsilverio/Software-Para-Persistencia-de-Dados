@@ -18,9 +18,11 @@ public class ToDo implements Identifiable<Long> {
 
     private String descricao;
 
+
+
     private Date dataCriacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id")
     @JsonIgnore
     private Category categoria;

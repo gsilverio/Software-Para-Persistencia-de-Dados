@@ -27,7 +27,7 @@ public class CategoryController extends AbstractController<Category, Long> {
     @Override
     protected void configureTableColumns() {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        nomeCol.setCellValueFactory(new PropertyValueFactory<>("nomeCategoria"));
     }
 
     @Override

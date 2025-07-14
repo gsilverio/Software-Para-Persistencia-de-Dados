@@ -48,4 +48,10 @@ public class Category implements Identifiable<Long> { // Adicione o "implements"
     public void setNomeCategoria(String nomeCategoria) {
         this.nomeCategoria = nomeCategoria;
     }
+
+
+    @Override
+    public String toString(){
+        return this.nomeCategoria;
+    }
 }

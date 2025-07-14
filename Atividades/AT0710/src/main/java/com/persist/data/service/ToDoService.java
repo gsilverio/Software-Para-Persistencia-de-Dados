@@ -22,6 +22,7 @@ public class ToDoService extends AbstractCrudService<ToDo, Long> {
     protected void updateEntityData(ToDo existingEntity, ToDo newData) {
         existingEntity.setDescricao(newData.getDescricao());
         existingEntity.setDataCriacao(newData.getDataCriacao());
+        existingEntity.setCategoria(newData.getCategoria());
     }
 
 }

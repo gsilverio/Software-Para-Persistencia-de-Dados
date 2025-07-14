@@ -67,12 +67,24 @@ public abstract class AbstractController<T extends Identifiable<ID>, ID> impleme
 
     }
 
-    protected void handleSelectionChange(T selectItem){
-        boolean isItemSelected = selectItem != null;
-        disableButton(false, true, true, true);
+    protected void handleSelectionChange(T selectedItem) {
+        boolean isItemSelected = selectedItem != null;
 
-        textField.setText(isItemSelected ? getEntityDescription(selectItem) : "");
+        if (isItemSelected) {
+            // Lógica para quando um item ESTÁ SELECIONADO
+            textField.setText(getEntityDescription(selectedItem));
 
+            // Habilita os botões de ação para o item
+            adicionarButton.setDisable(true); // Opcional: pode desabilitar se preferir
+            deletarButton.setDisable(false);
+            editarButton.setDisable(false);
+            cancelarButton.setDisable(false);
+
+        } else {
+            // Lógica para quando NENHUM item está selecionado
+            // Simplesmente resetamos para o estado inicial
+            resetUIState();
+        }
     }
 
     protected  void loadData(){
